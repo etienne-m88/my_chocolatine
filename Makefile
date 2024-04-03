@@ -6,6 +6,7 @@
 ##
 
 CC            =    gcc
+
 SRC            =    main.c
 
 OBJ            =    $(SRC:.c=.o)
