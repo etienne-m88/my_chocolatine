@@ -30,4 +30,4 @@ fclean: clean
 
 re:    fclean all
 
-.PHONY:    $(NAME) all clean fclean 
+.PHONY:    $(NAME) all clean fclean
