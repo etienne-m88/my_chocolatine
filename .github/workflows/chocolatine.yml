@@ -28,7 +28,6 @@ jobs:
             echo "::error file=$FILE,line=$LINE::$MESSAGE"
           done < coding-style-reports.log
           exit 1
-        fi
 
   check_program_compilation:
     needs: check_coding_style
