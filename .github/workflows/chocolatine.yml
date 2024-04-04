@@ -21,15 +21,14 @@ jobs:
       - name: Check Coding Style
         run: |
           check.sh $(pwd) $(pwd)
-          if [ -f coding-style-reports.log ]; then
-            while IFS= read -r line; do
-              FILE=$(echo "$line" | cut -d: -f1)
-              LINE=$(echo "$line" | cut -d: -f2)
-              MESSAGE=$(echo "$line" | cut -d: -f3-)
-              echo "::error file=$FILE,line=$LINE::$MESSAGE"
-            done < coding-style-reports.log
-            exit 1
-          fi
+          while IFS= read -r line; do
+            FILE=$(echo "$line" | cut -d: -f1)
+            LINE=$(echo "$line" | cut -d: -f2)
+            MESSAGE=$(echo "$line" | cut -d: -f3-)
+            echo "::error file=$FILE,line=$LINE::$MESSAGE"
+          done < coding-style-reports.log
+          exit 1
+        fi
 
   check_program_compilation:
     needs: check_coding_style
