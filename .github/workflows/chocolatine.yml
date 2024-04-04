@@ -7,9 +7,11 @@ on:
   pull_request:
     branches-ignore:
       - 'ga-ignore-*'
+
 env:
   MIRROR_URL: 'git@github.com:EpitechPromo2028/B-DOP-200-NCY-2-1-chocolatine-etienne.meunier.git'
   EXECUTABLES: ''
+
 jobs:
   check_coding_style:
     runs-on: ubuntu-latest
@@ -17,48 +19,49 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Check Coding Style
-    - id: check_coding_style
-      run: |
-        check.sh $(pwd) $(pwd)
-        if [ -f coding-style-reports.log ]; then
-          while IFS= read -r line; do
-            FILE=$(echo "$line" | cut -d: -f1)
-            LINE=$(echo "$line" | cut -d: -f2)
-            MESSAGE=$(echo "$line" | cut -d: -f3-)
-            echo "::error file=$FILE,line=$LINE::$MESSAGE"
-          done < coding-style-reports.log
-          exit 1
-        fi
-  check_program_compilation:
-    needs: check_coding_style
-    runs-on: ubuntu-latest
-    container: epitechcontent/epitest-docker
-    steps:
-    - uses: actions/checkout@v3
-    - name: Compile Program
-    - id: check_program_compilation
-      run: make
-      timeout-minutes: 2
-    - name: Clean Build
-      run: make clean
+        run: |
+          check.sh $(pwd) $(pwd)
+          if [ -f coding-style-reports.log ]; then
+            while IFS= read -r line; do
+              FILE=$(echo "$line" | cut -d: -f1)
+              LINE=$(echo "$line" | cut -d: -f2)
+              MESSAGE=$(echo "$line" | cut -d: -f3-)
+              echo "::error file=$FILE,line=$LINE::$MESSAGE"
+            done < coding-style-reports.log
+            exit 1
+          fi
+
+    check_program_compilation:
+      needs: check_coding_style
+      runs-on: ubuntu-latest
+      container: epitechcontent/epitest-docker
+      steps:
+      - uses: actions/checkout@v3
+      - name: Compile Program
+        run: make
+        timeout-minutes: 2
+      - name: Clean Build
+        run: make clean
+
   run_tests:
     needs: check_program_compilation
     runs-on: ubuntu-latest
     container: epitechcontent/epitest-docker
     steps:
-    - uses: actions/checkout@v3
-    - name: Run Tests
-    - id: run_tests
-      run: make tests_run
-      timeout-minutes: 2
+      - uses: actions/checkout@v3
+      - name: Run Tests
+        run: make tests_run
+        timeout-minutes: 2
+
   push_to_mirror:
     needs: run_tests
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Push to Mirror
-    - id: push_to_mirror
-      uses: pixta-dev/repository-mirroring-action@v1
-      with:
-        target_repo_url: ${{ env.MIRROR_URL }}
-        ssh_private_key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Push to Mirror
+        uses: pixta-dev/repository-mirroring-action@v1
+        with:
+          target_repo_url: ${{ env.MIRROR_URL }}
+          ssh_private_key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
