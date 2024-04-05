@@ -11,27 +11,20 @@ OBJ            =    $(SRC:.c=.o)
 
 NAME        =    tests
 
-CFLAGS        =    --coverage
-
 LDLIBS        =    -lcriterion
 
 
-all:            fclean $(NAME)
-                ./$(NAME)
+all:	fclean $(NAME)
+    ./$(NAME)
 
-$(NAME):        $(OBJ)
-                $(CC) -o $(NAME) $(OBJ) $(LDLIBS) $(CFLAGS) -lcriterion -lgcov
-
-coverage:
-    @gcovr
+$(NAME):	$(OBJ)
+    $(CC) -o $(NAME) $(OBJ) $(LDLIBS) -lcriterion
 
 clean:
-                rm -f $(OBJ)
-                rm -f .gc
+    rm -f $(OBJ)
+                
 
-fclean:         clean
-                rm -f $(NAME)
+fclean:	clean
+    rm -f $(NAME)
 
-re:                fclean all
-
-.PHONY:            $(NAME) all clean fclean re
+re:	fclean all
