@@ -13,16 +13,14 @@ NAME        =    tests
 
 LDLIBS        =    -lcriterion
 
-
 all:	fclean $(NAME)
     ./$(NAME)
 
 $(NAME):	$(OBJ)
-    $(CC) -o $(NAME) $(OBJ) $(LDLIBS) -lcriterion
+    gcc $(OBJ) -o $(NAME) $(LDLIBS)
 
 clean:
     rm -f $(OBJ)
-                
 
 fclean:	clean
     rm -f $(NAME)
