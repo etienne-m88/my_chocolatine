@@ -5,35 +5,22 @@
 ## Makefile
 ##
 
-CC          =    gcc
+SRC	=	$(wildcard *.c)
 
-SRC         =    test.c 
+OBJ	=	$(SRC:.c=.o)
 
-OBJ            =    $(SRC:.c=.o)
-
-NAME        =    unit_tests
-
-CFLAGS        =    --coverage
+NAME	=	tests
 
 LDLIBS        =    -lcriterion
 
-
-all:            fclean $(NAME)
-                ./$(NAME)
+all:	 ./$(NAME)
 
 $(NAME):        $(OBJ)
-                $(CC) -o $(NAME) $(OBJ) $(LDLIBS) $(CFLAGS) -lcriterion -lgcov
-
-coverage:
-    @gcovr
+                gcc -o $(NAME) $(OBJ) $(LDLIBS) -lcriterion -lgcov
 
 clean:
-                rm -f $(OBJ)
-                rm -f .gc
+	rm -f *.o
 
-fclean:         clean
-                rm -f $(NAME)
+fclean:	clean
 
-re:                fclean all
-
-.PHONY:            $(NAME) all clean fclean re
+re:	fclean all!
