@@ -12,6 +12,7 @@ OBJ	=	$(SRC:.c=.o)
 NAME	=	chocolatine
 
 all: 	$(NAME)
+	cd tests && $(MAKE)
 
 $(NAME):	$(OBJ)
 	gcc -o $(NAME) $(SRC)
