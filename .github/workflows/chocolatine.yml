@@ -19,6 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Check Coding Style
+      - id: check_coding_style
         run: |
           check.sh $(pwd) $(pwd)
           if [ -f coding-style-reports.log ]; then
@@ -37,6 +38,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Compile Program
+      - id: check_program_compilation
         run: make
         timeout-minutes: 2
       - name: Clean Build
@@ -49,6 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run Tests
+      - id: run_tests
         run: make tests_run
         timeout-minutes: 2
 
@@ -56,6 +59,7 @@ jobs:
     needs: run_tests
     runs-on: ubuntu-latest
     steps:
+      - id: push_to_mirror
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
