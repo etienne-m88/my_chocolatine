@@ -18,7 +18,6 @@ jobs:
     container: ghcr.io/epitech/coding-style-checker:latest
     steps:
       - uses: actions/checkout@v3
-        id: checkout_code
       - name: Check Coding Style
         run: |
           check.sh $(pwd) $(pwd)
@@ -29,6 +28,7 @@ jobs:
               MESSAGE=$(echo "$line" | cut -d: -f3-)
               echo "::error file=$FILE,line=$LINE::$MESSAGE"
             done < coding-style-reports.log
+          fi
 
   check_program_compilation:
     needs: check_coding_style
@@ -36,9 +36,9 @@ jobs:
     container: epitechcontent/epitest-docker
     steps:
       - uses: actions/checkout@v3
-        id: checkout_code_compilation
       - name: Compile Program
         run: make
+        timeout-minutes: 2
       - name: Clean Build
         run: make clean
 
@@ -48,16 +48,17 @@ jobs:
     container: epitechcontent/epitest-docker
     steps:
       - uses: actions/checkout@v3
-        id: checkout_code_tests
       - name: Run Tests
         run: make tests_run
+        timeout-minutes: 2
 
   push_to_mirror:
     needs: run_tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        id: checkout_for_mirror
+        with:
+          fetch-depth: 0
       - name: Push to Mirror
         uses: pixta-dev/repository-mirroring-action@v1
         with:
