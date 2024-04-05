@@ -49,7 +49,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run Tests
-        run: make tests_run
+        run: make tests
         timeout-minutes: 2
 
   push_to_mirror:
