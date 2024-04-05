@@ -18,8 +18,8 @@ jobs:
     container: ghcr.io/epitech/coding-style-checker:latest
     steps:
       - uses: actions/checkout@v3
-        name: Check Coding Style
-        id: check_coding_style
+        id: checkout_code
+      - name: Check Coding Style
         run: |
           check.sh $(pwd) $(pwd)
           if [ -f coding-style-reports.log ]; then
@@ -36,10 +36,9 @@ jobs:
     container: epitechcontent/epitest-docker
     steps:
       - uses: actions/checkout@v3
-        name: Compile Program
-        id: check_program_compilation
+        id: checkout_code_compilation
+      - name: Compile Program
         run: make
-        timeout-minutes: 2
       - name: Clean Build
         run: make clean
 
@@ -49,19 +48,16 @@ jobs:
     container: epitechcontent/epitest-docker
     steps:
       - uses: actions/checkout@v3
-        name: Run Tests
-        id: run_tests
+        id: checkout_code_tests
+      - name: Run Tests
         run: make tests_run
-        timeout-minutes: 2
 
   push_to_mirror:
     needs: run_tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-        id: push_to_mirror
+        id: checkout_for_mirror
       - name: Push to Mirror
         uses: pixta-dev/repository-mirroring-action@v1
         with:
