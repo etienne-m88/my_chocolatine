@@ -27,6 +27,3 @@ fclean:	clean
 	rm -f $(wildcard *~)
 
 re:	fclean all
-
-tests_run:
-    make -C tests
