@@ -26,7 +26,11 @@ fclean:	clean
 	rm -f $(OBJ)
 	rm -f $(wildcard *~)
 
+<<<<<<< HEAD
 re:	fclean all
 
 tests_run:
     make -C tests
+=======
+re:	fclean all
+>>>>>>> ee9d23289d68fe4e53c19241c53bdaf9abe1bdff
