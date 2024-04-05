@@ -5,28 +5,25 @@
 ## Makefile
 ##
 
-CC          = gcc
+SRC	=	main.c \
 
-SRC         = main.c
+OBJ	=	$(SRC:.c=.o)
 
-OBJ         = $(SRC:.c=.o)
+NAME	=	chocolatine
 
-NAME        = chocolatine
+all: 	$(NAME)
 
-$(NAME): $(OBJ)
-    $(CC) $(OBJ) -o $(NAME)
-
-all: $(NAME)
-
-tests_run:
-    make -C tests/
+$(NAME):	$(OBJ)
+	gcc -o $(NAME) $(SRC)
 
 clean:
-    rm -f $(OBJ)
-fclean: clean
-    rm -f $(NAME)
-    make fclean -C ./tests
+	rm -f *.o
 
-re: fclean all
+fclean:	clean
+	rm -f *log
+	rm -f *.a
+	rm -f $(NAME)
+	rm -f $(OBJ)
+	rm -f $(wildcard *~)
 
-.PHONY:
+re:	fclean all
